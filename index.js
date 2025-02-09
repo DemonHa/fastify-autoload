@@ -313,6 +313,14 @@ async function getPackageType (cwd) {
   }
 }
 
+function plugin (fn, opts) {
+  fn[Symbol.for('plugin-meta')] = {
+    ...opts,
+    dependencies: opts.dedependencies ?? [opts.dependencies.map(it => it[Symbol.for('fastify.display-name')])]
+  }
+  return fn
+}
+
 // do not create a new context, do not encapsulate
 // same as fastify-plugin
 fastifyAutoload[Symbol.for('skip-override')] = true
@@ -320,3 +328,4 @@ fastifyAutoload[Symbol.for('skip-override')] = true
 module.exports = fastifyAutoload
 module.exports.fastifyAutoload = fastifyAutoload
 module.exports.default = fastifyAutoload
+module.exports.plugin = plugin
