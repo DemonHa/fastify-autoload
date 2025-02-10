@@ -1,4 +1,4 @@
-import { FastifyPluginCallback, FastifyPluginAsync } from 'fastify'
+import { FastifyPluginCallback, FastifyPluginAsync, FastifyInstance } from 'fastify'
 
 type FastifyAutoloadPlugin = FastifyPluginCallback<NonNullable<fastifyAutoload.AutoloadPluginOptions>>
 
