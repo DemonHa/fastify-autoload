@@ -2,10 +2,6 @@ import { FastifyPluginCallback, FastifyPluginAsync } from 'fastify'
 
 type FastifyAutoloadPlugin = FastifyPluginCallback<NonNullable<fastifyAutoload.AutoloadPluginOptions>>
 
-type GetSixthGenericOfFasityInstance<Instance> = Instance extends FastifyInstance<any, any, any, any, any, infer U> ? U : never
-type GetFirstParameter<T> = T extends (...args: infer P) => any ? P[0] : void
-type GetFastifyDecorators<Plugins extends (FastifyPluginCallback<any, any, any, any, any> | FastifyPluginAsync<any, any, any, any, any>)[]> = GetSixthGenericOfFasityInstance<GetFirstParameter<Plugins[number]>>
-
 declare namespace fastifyAutoload {
   type RewritePrefix = (folderParent: string, folderName: string) => string | boolean
   type Filter = string | RegExp | ((path: string) => boolean)
@@ -32,7 +28,11 @@ declare namespace fastifyAutoload {
   export const fastifyAutoload: FastifyAutoloadPlugin
   export { fastifyAutoload as default }
 
-  export function plugin<Dependencies extends (FastifyPluginCallback | FastifyPluginAsync)[]> (fn: FastifyPluginCallback<any, any, any, any, GetFastifyDecorators<Dependencies>> | FastifyPluginAsync<any, any, any, any, GetFastifyDecorators<Dependencies>>, opts: { dependencies?: Dependencies }): FastifyPluginCallback
+  type GetSixthGenericOfFasityInstance<Instance> = Instance extends FastifyInstance<any, any, any, any, any, infer U> ? U : never
+  type GetFirstParameter<T> = T extends (...args: infer P) => any ? P[0] : never
+  type GetFastifyDecorators<Plugins extends (FastifyPluginCallback<any, any, any, any, any> | FastifyPluginAsync<any, any, any, any, any>)[]> = GetSixthGenericOfFasityInstance<GetFirstParameter<Plugins[number]>>
+
+  export function plugin<Dependencies extends (FastifyPluginCallback<any, any, any, any, any> | FastifyPluginAsync<any, any, any, any, any>)[]> (fn: FastifyPluginCallback<any, any, any, any, GetFastifyDecorators<Dependencies>> | FastifyPluginAsync<any, any, any, any, GetFastifyDecorators<Dependencies>>, opts: { dependencies?: Dependencies }): FastifyPluginCallback | FastifyPluginAsync
 }
 
 declare function fastifyAutoload (
