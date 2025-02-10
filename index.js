@@ -316,7 +316,7 @@ async function getPackageType (cwd) {
 function plugin (fn, opts) {
   fn[Symbol.for('plugin-meta')] = {
     ...opts,
-    dependencies: opts.dedependencies ?? [opts.dependencies.map(it => it[Symbol.for('fastify.display-name')])]
+    dependencies: opts.dedependencies ?? opts.dependencies.map(it => it[Symbol.for('fastify.display-name')])
   }
   return fn
 }

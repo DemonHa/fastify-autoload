@@ -32,7 +32,8 @@ declare namespace fastifyAutoload {
   type GetFirstParameter<T> = T extends (...args: infer P) => any ? P[0] : never
   type GetFastifyDecorators<Plugins extends (FastifyPluginCallback<any, any, any, any, any> | FastifyPluginAsync<any, any, any, any, any>)[]> = GetSixthGenericOfFasityInstance<GetFirstParameter<Plugins[number]>>
 
-  export function plugin<Dependencies extends (FastifyPluginCallback<any, any, any, any, any> | FastifyPluginAsync<any, any, any, any, any>)[]> (fn: FastifyPluginCallback<any, any, any, any, GetFastifyDecorators<Dependencies>> | FastifyPluginAsync<any, any, any, any, GetFastifyDecorators<Dependencies>>, opts: { dependencies?: Dependencies }): FastifyPluginCallback | FastifyPluginAsync
+  export function plugin<Dependencies extends (FastifyPluginCallback<any, any, any, any, any> | FastifyPluginAsync<any, any, any, any, any>)[]> (fn: FastifyPluginCallback<any, any, any, any, GetFastifyDecorators<Dependencies>>, opts: { dependencies?: Dependencies }): FastifyPluginCallback
+  export function plugin<Dependencies extends (FastifyPluginCallback<any, any, any, any, any> | FastifyPluginAsync<any, any, any, any, any>)[]> (fn: FastifyPluginAsync<any, any, any, any, GetFastifyDecorators<Dependencies>>, opts: { dependencies?: Dependencies }): FastifyPluginAsync
 }
 
 declare function fastifyAutoload (
